@@ -17,7 +17,7 @@ if(isset($_GET['switch_user'])) {
 	$_SESSION['user_id']=$user['ID'];
 	$_SESSION['username']=$user['username'];
 	$_SESSION['cookie']=$user['cookie'];
-	$_SESSION['md5']=$user['md5'];
+	$_SESSION['md5']=$user['newmd5']!=='';
 	$_SESSION['bds_token']=getBaiduToken($user['cookie'],$user['username']);
 	unset($_SESSION['folder']);
 	wlog('切换用户：['.$user['ID'].']'.$user['username']);

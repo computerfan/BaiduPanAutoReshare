@@ -92,9 +92,9 @@ function array_find($needle, $haystack,$reverse=false)
 function getBaiduToken($cookie,$username) {
 	global $ua;
 	$token=request('http://pan.baidu.com/disk/home',$ua,$cookie);
-	$bdstoken=findBetween($token['body'], 'TOKEN = "', '";');
+	$bdstoken=findBetween($token['body'], '"bdstoken":"', '",');
 	if(strlen($bdstoken)<10) {
-		alert_error('cookie失效，或者百度封了IP！','switch_user.php?name='.$username);
+		return false;
 	}
 	return $bdstoken;
 }
@@ -121,7 +121,7 @@ function createShare($fid,$code,$token,$cookie,$return=false) {
 }
 
 function check_share($id, $link, $name, $cookie) {
-	global $ua;
+	global $ua, $mysql;
 	if(!$link || $link  == '/s/fakelink') {
 		$url='';
 		$ret['conn_valid']=true;
@@ -168,11 +168,16 @@ function getFileMeta($file, $token, $cookie) {
 }
 
 function getDownloadLink($file, $token, $cookie) {
-	global $ua;
+	global $ua, $mysql;
 	$ret=request("http://pcs.baidu.com/rest/2.0/pcs/file?method=locatedownload&bdstoken=$token&app_id=250528&path=".urlencode($file),$ua,$cookie);
 	$ret = json_decode($ret['body'], true);
 	if (isset($ret['errno'])) {
 		wlog('文件 '.$file.' 获取下载地址失败：'.$ret['errno'], 2);
+		return false;
+	}
+	if (strpos($ret['path'], 'wenxintishi') !== false) {
+		$mysql->exec('update watchlist set failed=2 where id='.$_SERVER['QUERY_STRING']);
+		wlog('记录ID '.$_SERVER['QUERY_STRING'].'被温馨提示');
 		return false;
 	}
 	foreach($ret['server'] as &$v) {

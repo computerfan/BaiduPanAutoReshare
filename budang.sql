@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(255) NOT NULL UNIQUE,
   `cookie` text NOT NULL,
   `bduss` tinytext NOT NULL,
-  `md5` varchar(32) NOT NULL DEFAULT ''
+  `newmd5` TEXT NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `watchlist` (

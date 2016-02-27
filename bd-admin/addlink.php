@@ -65,6 +65,7 @@ if(isset($_POST['submit'])) {
 						} else {
 							$mysql->prepare('insert into watchlist values(null,?,?,?,0,?,?,0)')->execute(array($fileinfo['file_list']['list'][0]['fs_id'],$fileinfo['file_list']['list'][0]['path'],$_POST['link'],$_POST['code'],$check_user['ID'],));
 							$id=$mysql->lastInsertId();
+							//这里因为没读block_list需要的相关内容，暂时先不写入block_list，第一次访问会自动写入
 							wlog('添加链接记录：用户名：'.$fileinfo['linkusername'].'，文件完整路径：'.$fileinfo['file_list']['list'][0]['path'].'，文件fs_id：'.$fileinfo['file_list']['list'][0]['fs_id'].'，文件访问地址为：'. $jumper.$id);
 							echo '<h1>添加成功！<br />用户名：'.$fileinfo['linkusername'].'<br />文件完整路径：'.$fileinfo['file_list']['list'][0]['path'].'<br />文件fs_id：'.$fileinfo['file_list']['list'][0]['fs_id'].'<br />文件访问地址为：<a href="'. $jumper.$id.'" target="_blank">'. $jumper.$id.'</a></h1>';
 						}

@@ -77,7 +77,7 @@ foreach($filelist as &$v) {
 	<tr><td><input type="button" disabled="disabled" value="已添加" /></td>
 <?php endif;
 	if($v['isdir']) : ?>
-	<td><a href="tools/dl.php?<?=rawurlencode($v['name'])?>" target="_blank">自定义分享</a></td><td><a href="browse.php?switch_dir=<?=urlencode($v['name'].'/') ?>"><?=substr($v['name'],strlen(end($_SESSION['folder']))) ?>(文件夹)</a></td>
+	<td><a href="tools/share.php?<?=$v['fid']?>" target="_blank">自定义分享</a></td><td><a href="browse.php?switch_dir=<?=urlencode($v['name'].'/') ?>"><?=substr($v['name'],strlen(end($_SESSION['folder']))) ?>(文件夹)</a></td>
 	<?php else : ?>
 	<td><a href="tools/dl.php?<?=rawurlencode($v['name'])?>" target="_blank">下载</a>&nbsp;&nbsp;<a href="tools/share.php?<?=$v['fid']?>" target="_blank">自定义分享</a></td><td><?=substr($v['name'],strlen(end($_SESSION['folder']))) ?></td>
 	<?php endif; ?>

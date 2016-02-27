@@ -10,6 +10,7 @@ try {
 			die();
 		}
 		$mysql->query('delete from watchlist where id='.$_POST['delete']);
+		$mysql->query('delete from block_list where id='.$_POST['delete']);
 		wlog('删除记录：'.$_POST['delete'], 1);
 		echo '{"ret":"删除成功！"}';
 		die();
@@ -50,8 +51,12 @@ try {
 	set_time_limit(0);
 	foreach($list as $k=>$v) {
 		echo '<tr id="ROW'.$v[0].'"><td>';
-		if($v['failed']) {
+		if($v['failed'] == 1) {
 			echo '<font color="red">补档失败，可能是网络问题，如果持续出现，请检查文件</font>';
+		} elseif($v['failed'] == 2) {
+			echo '<font color="red">这个文件被温馨提示掉了，请在跳转页中进行提取来尝试修复</font>';
+		} elseif($v['failed'] == 3) {
+			echo '<font color="red">文件不存在</font>';
 		} else {
 			echo '<font color="green">自动补档保护中</font>';
 		}
